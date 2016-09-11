@@ -27,7 +27,6 @@ public class CustomCircleView extends View {
     private MyPoint customCirclePoint;
     private float swwpAngle ;
     private float lastPointStartAngle;
-    private float maxAngle;
 
     public void setSwwpAngle(float swwpAngle) {
         this.swwpAngle = swwpAngle;
@@ -108,40 +107,23 @@ public class CustomCircleView extends View {
     }
 
 
-    public void setCirclePoint(float maxAngle,float curPointStartAngle){
+    public void setCirclePoint(float curPointStartAngle){
         this.lastPointStartAngle = -90 + curPointStartAngle;
-        this.maxAngle = maxAngle;
-        if(swwpAngle > 0 && swwpAngle <90){
+        if(swwpAngle >= 0 && swwpAngle <= 90){
             endPoint.setX ((float) (customCirclePoint.getX() + customCircleRadius * Math.sin(Math.toRadians(swwpAngle))));
             endPoint.setY((float) (customCirclePoint.getY() - customCircleRadius * Math.cos(Math.toRadians(swwpAngle))));
         }
-        else if(swwpAngle == 90){
-            endPoint.setX(customCirclePoint.getX() + customCircleRadius);
-            endPoint.setY(customCirclePoint.getY());
-        }
-        else if(swwpAngle > 90 && swwpAngle < 180){
+        else if(swwpAngle > 90 && swwpAngle <= 180){
             endPoint.setX ((float) (customCirclePoint.getX() + customCircleRadius * Math.sin(Math.toRadians(180 - swwpAngle))));
             endPoint.setY((float) (customCirclePoint.getY() + customCircleRadius * Math.cos(Math.toRadians(180 - swwpAngle))));
         }
-        else if(swwpAngle == 180){
-            endPoint.setX(customCirclePoint.getX());
-            endPoint.setY(customCirclePoint.getY() + customCircleRadius);
-        }
-        else if(swwpAngle > 180 && swwpAngle < 270){
+        else if(swwpAngle > 180 && swwpAngle <= 270){
             endPoint.setX ((float) (customCirclePoint.getX() - customCircleRadius * Math.cos(Math.toRadians(270 - swwpAngle))));
             endPoint.setY((float) (customCirclePoint.getY() + customCircleRadius * Math.sin(Math.toRadians(270 - swwpAngle))));
         }
-        else if(swwpAngle == 270){
-            endPoint.setX(customCirclePoint.getX() - customCircleRadius);
-            endPoint.setY(customCirclePoint.getY());
-        }
-        else if(swwpAngle > 270 && swwpAngle < 360){
+        else if(swwpAngle > 270 && swwpAngle <= 360){
             endPoint.setX ((float) (customCirclePoint.getX() - customCircleRadius * Math.sin(Math.toRadians(360 - swwpAngle))));
             endPoint.setY((float) (customCirclePoint.getY() - customCircleRadius * Math.cos(Math.toRadians(360 - swwpAngle))));
-        }
-        else if(swwpAngle == 0 ||swwpAngle == 360){
-            endPoint.setX(customCirclePoint.getX());
-            endPoint.setY(customCirclePoint.getY() - customCircleRadius);
         }
     }
 
