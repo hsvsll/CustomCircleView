@@ -2,8 +2,10 @@ package com.example.qiyue.mycustomcircleview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
@@ -90,19 +92,24 @@ public class CustomCircleView extends View {
     protected void onDraw(Canvas canvas) {
         initView();
         canvas.drawCircle(customCirclePoint.getX(),customCirclePoint.getY(),customCircleRadius, mPaint);
-        if(swwpAngle > 0){
-            mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
-            canvas.drawArc(startOval,90,180,true,mPaint);
-        }
-        mPaint.setStyle(Paint.Style.STROKE);
+        MaskFilter maskFilter = new BlurMaskFilter(20, BlurMaskFilter.Blur.INNER);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setMaskFilter(maskFilter);
+        mPaint.setColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
         canvas.drawArc(oval,-90,swwpAngle,false,mPaint);
-        mPaint.setStyle(Paint.Style.FILL);
-        endOval.left = endPoint.getX() - mStrokeWidth/2;
-        endOval.top = endPoint.getY() - mStrokeWidth/2;
-        endOval.right = endPoint.getX() + mStrokeWidth/2;
-        endOval.bottom = endPoint.getY() + mStrokeWidth/2;
-        canvas.drawArc(endOval,lastPointStartAngle,180,true,mPaint);
+//        if(swwpAngle > 0){
+//            mPaint.setStyle(Paint.Style.FILL);
+//            mPaint.setColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
+//            canvas.drawArc(startOval,90,180,true,mPaint);
+//        }
+//        mPaint.setStyle(Paint.Style.STROKE);
+//        canvas.drawArc(oval,-90,swwpAngle,false,mPaint);
+//        mPaint.setStyle(Paint.Style.FILL);
+//        endOval.left = endPoint.getX() - mStrokeWidth/2;
+//        endOval.top = endPoint.getY() - mStrokeWidth/2;
+//        endOval.right = endPoint.getX() + mStrokeWidth/2;
+//        endOval.bottom = endPoint.getY() + mStrokeWidth/2;
+//        canvas.drawArc(endOval,lastPointStartAngle,180,true,mPaint);
         super.onDraw(canvas);
     }
 

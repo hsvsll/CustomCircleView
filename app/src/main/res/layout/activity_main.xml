@@ -7,7 +7,6 @@
 
     <com.example.qiyue.mycustomcircleview.CustomCircleView
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimaryDark"
         android:id="@+id/my_custom_view"
         android:layout_width="300dp"
         android:layout_height="300dp" />
