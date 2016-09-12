@@ -85,16 +85,15 @@ public class CustomCircleView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setAntiAlias(true);
         mPaint.setColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
-
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        MaskFilter maskFilter = new BlurMaskFilter(20, BlurMaskFilter.Blur.INNER);
+        mPaint.setMaskFilter(maskFilter);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         initView();
         canvas.drawCircle(customCirclePoint.getX(),customCirclePoint.getY(),customCircleRadius, mPaint);
-        MaskFilter maskFilter = new BlurMaskFilter(20, BlurMaskFilter.Blur.INNER);
-        mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setMaskFilter(maskFilter);
         mPaint.setColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
         canvas.drawArc(oval,-90,swwpAngle,false,mPaint);
 //        if(swwpAngle > 0){

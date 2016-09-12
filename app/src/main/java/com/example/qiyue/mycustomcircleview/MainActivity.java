@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 float fraction = valueAnimator.getAnimatedFraction();
                 float curAngle = mMaxAngle * fraction;
                 circleView.setSwwpAngle(curAngle);
-                circleView.setCirclePoint(curAngle);
+//                circleView.setCirclePoint(curAngle);
                 circleView.postInvalidate();
             }
         });
