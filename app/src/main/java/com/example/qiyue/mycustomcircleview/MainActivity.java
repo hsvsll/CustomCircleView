@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private float mMaxAngle = 0;
+    private float mMaxAngle = 90;
     private ValueAnimator valueAnimator;
+    private CustomCircleView circleView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void initCircle() {
-        final CustomCircleView circleView = (CustomCircleView) findViewById(R.id.my_custom_view);
-        circleView.setmStrokeWidth(40);
+        circleView = (CustomCircleView) findViewById(R.id.my_custom_view);
+        circleView.setStrokeWidth(40);
         valueAnimator = ValueAnimator.ofFloat(0,1);
         valueAnimator.setDuration(5000);
         valueAnimator.start();
@@ -39,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float fraction = valueAnimator.getAnimatedFraction();
                 float curAngle = mMaxAngle * fraction;
-                circleView.setSwwpAngle(curAngle);
-//                circleView.setCirclePoint(curAngle);
+                circleView.setSweepAngle(curAngle);
                 circleView.postInvalidate();
             }
         });
