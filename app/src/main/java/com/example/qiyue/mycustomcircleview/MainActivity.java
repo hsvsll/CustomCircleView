@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     }
     private void initCircle() {
         final CustomCircleView circleView = (CustomCircleView) findViewById(R.id.my_custom_view);
-        circleView.setCustomCirclePoint(460,440);
-        circleView.setCustomCircleRadius(400);
         circleView.setmStrokeWidth(40);
         valueAnimator = ValueAnimator.ofFloat(0,1);
         valueAnimator.setDuration(5000);

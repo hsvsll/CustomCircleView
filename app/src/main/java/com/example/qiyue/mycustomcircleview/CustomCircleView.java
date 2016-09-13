@@ -4,15 +4,12 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.MaskFilter;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -20,6 +17,7 @@ import android.view.View;
  */
 public class CustomCircleView extends View {
     private Paint mPaint;
+    private Paint mInsidePaint;
     private RectF oval;
     private RectF startOval;
     private RectF endOval;
@@ -29,35 +27,42 @@ public class CustomCircleView extends View {
     private MyPoint customCirclePoint;
     private float swwpAngle ;
     private float lastPointStartAngle;
+    private int viewWidth;
+    private int viewHeight;
+    private float customCirclePointX;
+    private float customCirclePointY;
+    private MaskFilter maskFilter;
 
     public void setSwwpAngle(float swwpAngle) {
         this.swwpAngle = swwpAngle;
+        initRectF();
     }
 
     public void setmStrokeWidth(float mStrokeWidth) {
         this.mStrokeWidth = mStrokeWidth;
+        initPaint();
     }
 
-    public void setCustomCirclePoint(float x, float y) {
-        this.customCirclePoint = new MyPoint(x ,y);
-        endPoint = new MyPoint();
-    }
+//    public void setCustomCirclePoint(float x, float y) {
+//        this.customCirclePoint = new MyPoint(x ,y);
+//        endPoint = new MyPoint();
+//    }
 
-    public void setCustomCircleRadius(float customCircleRadius) {
-        this.customCircleRadius = customCircleRadius;
-    }
+//    public void setCustomCircleRadius(float customCircleRadius) {
+//        this.customCircleRadius = customCircleRadius;
+//    }
 
     public CustomCircleView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public CustomCircleView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
+        this(context,null,0);
     }
 
     public CustomCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initView();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -66,49 +71,64 @@ public class CustomCircleView extends View {
     }
 
     private void initView() {
-        oval =  new RectF();
-        oval.left = customCirclePoint.getX() - customCircleRadius;
-        oval.top = customCirclePoint.getY() - customCircleRadius;
-        oval.right = customCirclePoint.getX() + customCircleRadius;
-        oval.bottom = customCirclePoint.getY() + customCircleRadius;
-
-        startOval = new RectF();
-        startOval.left = customCirclePoint.getX() - mStrokeWidth/2;
-        startOval.top = customCirclePoint.getY() - customCircleRadius - mStrokeWidth/2;
-        startOval.right = customCirclePoint.getX() + mStrokeWidth/2;
-        startOval.bottom = customCirclePoint.getY() - customCircleRadius + mStrokeWidth/2;
-
-        endOval = new RectF();
+//        startOval = new RectF();
+//        startOval.left = customCirclePoint.getX() - mStrokeWidth/2;
+//        startOval.top = customCirclePoint.getY() - customCircleRadius - mStrokeWidth/2;
+//        startOval.right = customCirclePoint.getX() + mStrokeWidth/2;
+//        startOval.bottom = customCirclePoint.getY() - customCircleRadius + mStrokeWidth/2;
+//        endOval = new RectF();
 
         mPaint = new Paint();
-        mPaint.setStrokeWidth(mStrokeWidth);
+        maskFilter = new BlurMaskFilter(20, BlurMaskFilter.Blur.INNER);
+
+        mInsidePaint = new Paint();
+        oval =  new RectF();
+
+        initPaint();
+
+
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setAntiAlias(true);
-        mPaint.setColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
+        mPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        MaskFilter maskFilter = new BlurMaskFilter(20, BlurMaskFilter.Blur.INNER);
         mPaint.setMaskFilter(maskFilter);
+
+        mInsidePaint.setStyle(Paint.Style.STROKE);
+        mInsidePaint.setAntiAlias(true);
+        mInsidePaint.setStrokeCap(Paint.Cap.ROUND);
+        mInsidePaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+    }
+
+    private void initPaint() {
+        mPaint.setStrokeWidth(mStrokeWidth);
+
+        mInsidePaint.setStrokeWidth(mStrokeWidth);
+
+        initRectF();
+    }
+
+    private void initRectF() {
+        oval.left = 0 ;
+        oval.top = 0;
+        oval.right = viewWidth + mStrokeWidth;
+        oval.bottom = viewHeight + mStrokeWidth;
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        customCircleRadius = w / 2;
+
+        customCirclePointX = w / 2;
+        customCirclePointY = h / 2;
+        viewWidth = w;
+        viewHeight = h;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        initView();
-        canvas.drawCircle(customCirclePoint.getX(),customCirclePoint.getY(),customCircleRadius, mPaint);
-        mPaint.setColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
-        canvas.drawArc(oval,-90,swwpAngle,false,mPaint);
-//        if(swwpAngle > 0){
-//            mPaint.setStyle(Paint.Style.FILL);
-//            mPaint.setColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
-//            canvas.drawArc(startOval,90,180,true,mPaint);
-//        }
-//        mPaint.setStyle(Paint.Style.STROKE);
-//        canvas.drawArc(oval,-90,swwpAngle,false,mPaint);
-//        mPaint.setStyle(Paint.Style.FILL);
-//        endOval.left = endPoint.getX() - mStrokeWidth/2;
-//        endOval.top = endPoint.getY() - mStrokeWidth/2;
-//        endOval.right = endPoint.getX() + mStrokeWidth/2;
-//        endOval.bottom = endPoint.getY() + mStrokeWidth/2;
-//        canvas.drawArc(endOval,lastPointStartAngle,180,true,mPaint);
+        canvas.drawCircle(customCirclePointX, customCirclePointY, customCircleRadius, mPaint);
+        canvas.drawArc(oval,-90,swwpAngle,false,mInsidePaint);
         super.onDraw(canvas);
     }
 
